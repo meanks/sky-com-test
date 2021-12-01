@@ -17,10 +17,9 @@ export const getUser = async (
   res: Response
 ): Promise<Response> => {
   const page: number = +(req.query.page as any) || 1;
-  const take: number = 10;
+  const limit: number = 10;
   let options: any = {
-    take,
-    skip: (page - 1) * take
+    skip: (page - 1) * limit
   };
   if (req.query.qs) {
     options = {
@@ -52,7 +51,10 @@ export const updateUser = async (
   return res.json({ msg: 'no user found', data: null });
 };
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   const userRepository = getMongoRepository(User);
   await userRepository.delete(req.params.id);
   return res.json({ msg: 'success', data: null });
